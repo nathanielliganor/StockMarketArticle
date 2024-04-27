@@ -80,6 +80,9 @@ def update_plot(year):
     ax.legend()
     st.pyplot(fig)
 
+
+update_plot(year_for_losses_and_profits)
+
 st.markdown("""
     Our interactive visualization offers a daily breakdown of profits and losses for each major stock index, revealing the pulse of the market
     with stark clarity. This tool meticulously tracks the fluctuations of the S&P 500, Dow Jones, and NASDAQ, presenting a daily tally of gains 
@@ -89,8 +92,6 @@ st.markdown("""
     which is crucial for making informed investment decisions. This tool encapsulates the essence of our financial world’s ongoing narrative, capturing 
     the continuous interplay between triumph and challenge that defines the stock market.
 """)
-
-update_plot(year_for_losses_and_profits)
 
 # Selection for year for the second Matplotlib plot
 year_for_price_change = st.selectbox('Select Year for Price Percentage Change:', options=df['Year'].unique(), key='year2')
