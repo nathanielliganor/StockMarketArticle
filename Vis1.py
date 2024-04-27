@@ -106,19 +106,20 @@ year_for_price_change = st.selectbox('Select Year for Price Percentage Change:',
 def plot_price_change(year):
     filtered_data = df[df['Year'] == year]
     plt.figure(figsize=(10, 6))
-    plt.bar(filtered_data['Date'].dt.strftime('%Y-%m-%d'), filtered_data['Price_Percentage_Change'],
+    plt.bar(filtered_data['Date'], filtered_data['Price_Percentage_Change'],
             width=0.5, color='blue')
-    plt.title(f'Bar Chart of Price Percentage Change for Year: {year}')
+    plt.title('Bar Chart of Price Percentage Change')
     plt.xlabel('Date')
-    plt.ylabel('Percentage Change (%)')
-    plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=1))
-    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
+    plt.ylabel('Percentage Change')
     plt.xticks(rotation=45)
     plt.tight_layout()
     st.pyplot(plt)
 
 plot_price_change(year_for_price_change)
 
+st.markdown("""
+    
+""")
 
 st.markdown("""
 ### Data Manipulation
