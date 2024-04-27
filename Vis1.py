@@ -82,3 +82,40 @@ These could be placeholder columns or data labels that serve no analytical purpo
 during a specific period by measuring the difference between its closing and opening prices. Percentage Change, on the other hand, expresses the relative change in an asset's price as a percentage of the opening price, providing valuable context regarding the magnitude of price movements. Additionally, employing advanced techniques like 
 moving averages further enhances our understanding of market trends. By smoothing out short-term fluctuations, moving averages reveal the underlying trend in asset prices over defined periods. In essence, this data manipulation process refines raw market data into actionable intelligence, forming the bedrock of informed investment decisions and empowering investors to navigate the complexities of finance with confidence.
 """)
+
+import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load the market data
+@st.cache
+def load_data():
+    df = pd.read_csv("./MarketData.csv")
+    df['Date'] = pd.to_datetime(df['Date'])
+    df.drop(columns=['Unnamed: 0'], inplace=True)
+    return df
+
+market_data = load_data()
+unique_years = sorted(market_data['Date'].dt.year.unique())
+
+# Streamlit widget for selecting the year
+year = st.selectbox('Select Year:', unique_years)
+
+def update_plot(year):
+    # Filter market data by the selected year
+    filtered_data = market_data[market_data['Date'].dt.year == year]
+
+    # Create the plot
+    plt.figure(figsize=(10, 6))
+    plt.bar(filtered_data['Date'].dt.strftime('%Y-%m-%d'), filtered_data['Price_Percentage_Change'],
+            width=0.5, color='blue')
+    plt.title('Bar Chart of Price Percentage Change for Year: ' + str(year))
+    plt.xlabel('Date')
+    plt.ylabel('Percentage Change (%)')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+
+    # Display the plot in Streamlit
+    st.pyplot(plt)
+
+update_plot(year)
