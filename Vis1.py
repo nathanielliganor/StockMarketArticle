@@ -109,36 +109,51 @@ chart = alt.Chart(filtered_altair_df).mark_bar().encode(
 
 st.altair_chart(chart, use_container_width=True)
 
-def create_data():
-    np.random.seed(10)
-    dates = pd.date_range('2023-01-01', periods=100)
-    data = np.random.randn(100).cumsum()
-    df = pd.DataFrame(data, columns=['value'], index=dates)
-    return df
+###############################
 
-df = create_data()
+# Setup the main plot and selection tool in Bokeh
+def create_interactive_plot(df):
+    p = figure(height=400, width=800, tools="xpan", x_axis_type="datetime",
+               x_range=(df['Date'].min(), df['Date'].max()))
 
-# Function to create a basic Bokeh plot
-def create_simple_bokeh_plot(df):
-    df['date'] = pd.to_datetime(df.index)  # Ensure datetime format
-    df['date'] = df['date'].apply(convert_date_to_datetime)  # Convert for Bokeh
-    source = ColumnDataSource(data={
-        'date': df['date'],
-        'value': df['value']
-    })
+    select = figure(title="Drag the middle and edges of the selection box to change the range above",
+                    height=130, width=800, y_range=p.y_range,
+                    x_axis_type="datetime", y_axis_type=None,
+                    tools="", toolbar_location=None, background_fill_color="#efefef")
 
-    p = figure(title="Simple Bokeh Line Plot", x_axis_type='datetime',
-               plot_height=350, plot_width=800)
-    p.line('date', 'value', source=source, line_width=2)
+    range_tool = RangeTool(x_range=p.x_range)
+    range_tool.overlay.fill_color = 'navy'
+    range_tool.overlay.fill_alpha = 0.2
+    select.add_tools(range_tool)
+    select.ygrid.grid_line_color = None
 
-    return p
+    colors = Category10[10]
+    ticker_names = {
+        '^NYA': "NYSE",
+        '^IXIC': "NASDAQ",
+        '^DJI': "Dow Jones",
+        '^GSPC': "S&P 500"
+    }
 
-# Streamlit application layout
-st.title("Basic Bokeh Plot in Streamlit")
-st.write("This is a simple example of integrating a Bokeh plot within Streamlit.")
+    for i, (ticker, group) in enumerate(df.groupby('Ticker')):
+        ticker_name = ticker_names.get(ticker, ticker)  # Use mapping, default to ticker if not found
+        source = ColumnDataSource(data={
+            'date': group['Date'],
+            'close': group['Adj Close']
+        })
+        color = colors[i % len(colors)]
+        p.line(x='date', y='close', source=source, legend_label=ticker_name, color=color, line_width=2.5)
+        select.line(x='date', y='close', source=source, color=color, line_width=2.5)
 
-# Generate the plot
-plot = create_simple_bokeh_plot(df)
+    p.legend.title = "Ticker"
+    p.legend.location = 'top_left'
 
-# Display the plot in Streamlit
-st.bokeh_chart(plot, use_container_width=True)
+    # Combining the plots into one layout
+    layout = column(p, select)
+    return layout
+
+# Use Streamlit to display the plot
+df = pd.read_csv("./MarketData.csv")
+df['Date'] = pd.to_datetime(df['Date'])
+bokeh_plot = create_interactive_plot(df)
+st.bokeh_chart(bokeh_plot, use_container_width=True)
