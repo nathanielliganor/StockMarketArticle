@@ -93,7 +93,6 @@ filtered_altair_df = df[df['Year'] == year_for_altair]
 months_order = [calendar.month_name[i] for i in range(1, 13)]
 chart = alt.Chart(filtered_altair_df).mark_bar().encode(
     x=alt.X("Month_Name:O", title="Month", sort=months_order, axis=alt.Axis(labelAngle=-45)),
-    xOffset=alt.XOffset("Ticker:N", title="Ticker"),
     y=alt.Y("sum(Volume):Q", title="Total Volume"),
     color=alt.Color("Ticker_Name:N", title="Ticker"),
     tooltip=[alt.Tooltip('sum(Volume):Q', title="Volume Sum", format=',.0f')]
