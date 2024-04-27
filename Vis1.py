@@ -70,14 +70,22 @@ def update_plot(year):
 # Function to plot price percentage change
 def plot_price_change(year):
     filtered_data = market_data[market_data['Date'].dt.year == year]
+
+    # Create the plot
     plt.figure(figsize=(10, 6))
     plt.bar(filtered_data['Date'].dt.strftime('%Y-%m-%d'), filtered_data['Price_Percentage_Change'],
-            width=0.5, color='blue')
+            width=10, color='blue')  # Adjust width as needed
+
     plt.title(f'Bar Chart of Price Percentage Change for Year: {year}')
     plt.xlabel('Date')
     plt.ylabel('Percentage Change (%)')
+    
+    # Improve the date formatting and set x-axis to show only month-start ticks
+    plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=1))  # Adjust interval as needed
+    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
     plt.xticks(rotation=45)
     plt.tight_layout()
+    
     st.pyplot(plt)
 
 # Call the functions to update the plots
