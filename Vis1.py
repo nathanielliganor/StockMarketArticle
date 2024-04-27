@@ -12,6 +12,8 @@ from bokeh.palettes import Category10
 from bokeh.io import output_notebook
 from bokeh.util.serialization import convert_date_to_datetime
 from altair import datum
+import calendar
+
 
 st.title("Investor's Daily")
 st.markdown("""
@@ -26,7 +28,7 @@ Navigating the intricate world of stock markets requires a firm grasp of histori
 
 Diving deeper, our sector-specific analyses offer a nuanced perspective, dissecting the triumphs and tribulations witnessed by technology frontrunners, the steady prowess of healthcare giants, and the pivotal role of finance institutions. These visualizations go beyond mere numbers, painting a vivid picture of how innovation, regulatory shifts, and global events have impacted these vital sectors, ultimately influencing the broader market dynamics.
 
-Moreover, our real-time data integration ensures that readers remain at the forefront of market developments. The live ticker and news feed provide instantaneous updates, capturing the pulse of the financial world as it unfolds. Whether tracking sudden market fluctuations, monitoring breaking news, or staying abreast of emerging trends, these features empower users to make informed decisions and stay ahead of the curve..
+Moreover, our real-time data integration ensures that readers remain at the forefront of market developments. The live ticker and news feed provide instantaneous updates, capturing the pulse of the financial world as it unfolds. Whether tracking sudden market fluctuations, monitoring breaking news, or staying abreast of emerging trends, these features empower users to make informed decisions and stay ahead of the curve.
 """)
 
 # Enable Altair data transformer
@@ -83,6 +85,9 @@ def update_plot(year):
 
 update_plot(year_for_losses_and_profits)
 
+# Streamlit selection for year for the second visualization
+year_for_price_change = st.selectbox('Select Year for Price Percentage Change:', unique_years, key='year2')
+
 # Function to plot price percentage change
 def plot_price_change(year):
     filtered_data = df[df['Year'] == year]
@@ -98,6 +103,7 @@ def plot_price_change(year):
     plt.tight_layout()
     st.pyplot(plt)
 
+plot_price_change(year_for_price_change)
 
 st.markdown("""
 ### Data Manipulation
@@ -107,11 +113,6 @@ These could be placeholder columns or data labels that serve no analytical purpo
 during a specific period by measuring the difference between its closing and opening prices. Percentage Change, on the other hand, expresses the relative change in an asset's price as a percentage of the opening price, providing valuable context regarding the magnitude of price movements. Additionally, employing advanced techniques like 
 moving averages further enhances our understanding of market trends. By smoothing out short-term fluctuations, moving averages reveal the underlying trend in asset prices over defined periods. In essence, this data manipulation process refines raw market data into actionable intelligence, forming the bedrock of informed investment decisions and empowering investors to navigate the complexities of finance with confidence.
 """)
-
-import streamlit as st
-import pandas as pd
-import altair as alt
-import calendar
 
 # Enable data transformer for Altair
 alt.data_transformers.enable("default")
@@ -158,5 +159,16 @@ chart = alt.Chart(filtered_df).mark_bar().encode(
 
 # Display the chart in Streamlit
 st.altair_chart(chart, use_container_width=True)
-###############################
+
+st.markdown("""
+Delving into the intricacies of trading volume, our interactive visualization presents a compelling overview of the
+monthly volume sums for each major US stock index from 2008 to 2023. This tool not only highlights the sheer scale of 
+trading activity over time but also enables users to pinpoint specific moments of heightened volatility or unusual market tranquility. 
+By hovering over the data points, users gain insights into the total trading volumes for indices like the S&P 500, Dow Jones, and 
+NASDAQ—allowing them to observe how major events, such as economic recessions, technological breakthroughs, or geopolitical tensions, 
+correlate with spikes or dips in market activity. This visualization is integral to understanding the rhythm of the market and equips 
+investors with the knowledge to assess how external factors drive trading behaviors. Through this dynamic interface, readers can trace 
+the ebb and flow of the market's pulse, providing a deeper appreciation of how historical and current events shape financial landscapes 
+and influence investment strategies.
+""")
 
