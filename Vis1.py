@@ -34,20 +34,20 @@ alt.data_transformers.enable("default")
 # Function to load and preprocess the market data
 @st.cache
 def load_data():
-    market_data = pd.read_csv("./MarketData.csv")
-    market_data['Date'] = pd.to_datetime(market_data['Date'])
-    market_data.drop(columns=['Unnamed: 0'], inplace=True)
+    df = pd.read_csv("./MarketData.csv")
+    df['Date'] = pd.to_datetime(df['Date'])
+    df.drop(columns=['Unnamed: 0'], inplace=True)
 
-    market_data['Price_Change'] = market_data['Adj Close'] - market_data['Open']
-    market_data['Price_Change_Direction'] = market_data['Price_Change'].apply(lambda x: 1 if x > 0 else 0)
-    market_data['Price_Percentage_Change'] = ((market_data['Close'] - market_data['Open']) / market_data['Open']) * 100
-    market_data['Price_Percentage_Change_Direction'] = market_data['Price_Percentage_Change'].apply(lambda x: 1 if x > 0 else 0)
+    df['Price_Change'] = df['Adj Close'] - df['Open']
+    df['Price_Change_Direction'] = df['Price_Change'].apply(lambda x: 1 if x > 0 else 0)
+    df['Price_Percentage_Change'] = ((df['Close'] - df['Open']) / df['Open']) * 100
+    df['Price_Percentage_Change_Direction'] = df['Price_Percentage_Change'].apply(lambda x: 1 if x > 0 else 0)
     window_size = 5
-    market_data['Moving_Average'] = market_data['Adj Close'].rolling(window=window_size).mean()
-    return market_data
+    df['Moving_Average'] = df['Adj Close'].rolling(window=window_size).mean()
+    return df
 
-market_data = load_data()
-unique_years = sorted(market_data['Date'].dt.year.unique())
+df = load_data()
+unique_years = sorted(df['Date'].dt.year.unique())
 
 # Streamlit selection for year
 year = st.selectbox('Select Year:', unique_years)
@@ -61,7 +61,7 @@ ticker_names = {
 }
 
 def update_plot(year):
-    filtered_data = market_data[market_data['Date'].dt.year == year]
+    filtered_data = df[df['Date'].dt.year == year]
     grouped_data = filtered_data.groupby('Ticker')['Price_Change_Direction'].value_counts().unstack().fillna(0)
     tickers = grouped_data.index
     zeros = grouped_data[0].values
