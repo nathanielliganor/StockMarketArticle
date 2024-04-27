@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 st.title("Investor's Daily")
 st.subheader("Investing in Insights: Interactive Tools to Navigate the Stock Market")
 st.markdown("""
-## Article By: Ayush Shah and Nathaniel Liganor
+### Article By: Ayush Shah and Nathaniel Liganor
 """)
 
 st.markdown("""
