@@ -24,6 +24,14 @@ unique_years = sorted(market_data['Date'].dt.year.unique())
 # Streamlit selection for year
 year = st.selectbox('Select Year:', unique_years)
 
+# Define the ticker names mapping
+ticker_names = {
+    '^NYA': "NYSE",
+    '^IXIC': "NASDAQ",
+    '^DJI': "Dow Jones",
+    '^GSPC': "S&P 500"
+}
+
 def update_plot(year):
     filtered_data = market_data[market_data['Date'].dt.year == year]
     grouped_data = filtered_data.groupby('Ticker')['Price_Change_Direction'].value_counts().unstack().fillna(0)
@@ -38,9 +46,12 @@ def update_plot(year):
 
     ax.set_xlabel('Ticker')
     ax.set_ylabel('Count')
-    ax.set_title(f'Counts of losses and profits occurred per day by Ticker ({year})')
+    ax.set_title(f'Counts of Losses and Profits Occurred Per Day by Ticker ({year})')
+
+    # Replace ticker symbols with names in the plot
+    ticker_labels = [ticker_names.get(ticker, ticker) for ticker in tickers]
     ax.set_xticks(x)
-    ax.set_xticklabels(tickers)
+    ax.set_xticklabels(ticker_labels)
     ax.legend()
 
     st.pyplot(fig)
