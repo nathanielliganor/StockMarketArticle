@@ -59,6 +59,7 @@ def load_data():
     return df
 
 df = load_data()
+unique_years = sorted(market_data['Date'].dt.year.unique())
 
 # Selection for year for the first Matplotlib plot
 year_for_losses_and_profits = st.selectbox('Select Year for Losses and Profits:', options=df['Year'].unique(), key='year1')
