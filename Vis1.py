@@ -197,3 +197,9 @@ screenshot_path = "./Screenshot 2024-04-27 at 4.19.38 AM.png"
 
 st.image(screenshot_path, caption='Your Screenshot', use_column_width=True)
 
+st.markdown("""
+Analyzing the performance of major market indices against each other from 2008 to 2023 unveils a rich tapestry of interwoven trends and divergences. While each index—S&P 500, Dow Jones, NASDAQ, and NYSE—tends to track the overall market sentiment, nuanced differences emerge, reflecting sectoral strengths, economic policies, and global shifts. 
+For instance, the NASDAQ's heavy weighting towards technology often leads to more pronounced gains during tech booms, contrasting with the broader-based S&P 500, which offers a more diversified snapshot of the economy. The Dow Jones, comprising thirty blue-chip companies, is often seen as a barometer of industrial and economic health, while the 
+NYSE reflects a broader spectrum of companies and industries. Over the years, these indices have displayed varying degrees of resilience and volatility, mirroring the ever-evolving landscape of global finance. Understanding these nuances is essential for investors seeking to diversify their portfolios and capitalize on emerging opportunities in 
+an increasingly interconnected market.
+""")
