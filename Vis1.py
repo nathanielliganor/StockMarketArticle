@@ -99,6 +99,8 @@ trading also transformed market dynamics, leading to faster recoveries and more 
 profit and loss becomes crucial for predicting market trends and guiding investor strategies, embodying the ever-evolving spirit of the financial landscape.
 """)
 
+
+st.subheader(" Understanding Market Growth Through Percentage Changes")
 # Selection for year for the second Matplotlib plot
 year_for_price_change = st.selectbox('Select Year for Price Percentage Change:', options=df['Year'].unique(), key='year2')
 
