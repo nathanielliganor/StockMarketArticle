@@ -148,7 +148,7 @@ filtered_df = df[df['Year'] == year]
 
 # Create the chart
 chart = alt.Chart(filtered_df).mark_bar().encode(
-    x=alt.X("Ticker_Name:O", title="Month", sort=months_order, axis=alt.Axis(labelAngle=-45)),
+    x=alt.X("Month_Name:O", title="Month", sort=months_order, axis=alt.Axis(labelAngle=-45)),
     y=alt.Y("sum(Volume):Q", title="Total Volume"),
     color=alt.Color("Ticker_Name:N", title="Ticker"),
     tooltip=[alt.Tooltip('sum(Volume):Q', title="Volume Sum", format=',.0f')]
