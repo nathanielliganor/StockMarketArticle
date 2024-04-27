@@ -11,7 +11,7 @@ from bokeh.layouts import column
 from bokeh.palettes import Category10
 from bokeh.io import output_notebook
 from bokeh.util.serialization import convert_date_to_datetime
-
+from altair import datum
 
 st.title("Investor's Daily")
 st.subheader("Investing in Insights: Interactive Tools to Navigate the Stock Market")
@@ -111,49 +111,45 @@ st.altair_chart(chart, use_container_width=True)
 
 ###############################
 
-# Setup the main plot and selection tool in Bokeh
-def create_interactive_plot(df):
-    p = figure(height=400, width=800, tools="xpan", x_axis_type="datetime",
-               x_range=(df['Date'].min(), df['Date'].max()))
+# Load and preprocess the data
+@st.cache
+def load_data():
+    df = pd.read_csv("~/Documents/MarketData/MarketData.csv")
+    df['Date'] = pd.to_datetime(df['Date'])
+    df['Year'] = df['Date'].dt.year
+    return df
 
-    select = figure(title="Drag the middle and edges of the selection box to change the range above",
-                    height=130, width=800, y_range=p.y_range,
-                    x_axis_type="datetime", y_axis_type=None,
-                    tools="", toolbar_location=None, background_fill_color="#efefef")
+df = load_data()
 
-    range_tool = RangeTool(x_range=p.x_range)
-    range_tool.overlay.fill_color = 'navy'
-    range_tool.overlay.fill_alpha = 0.2
-    select.add_tools(range_tool)
-    select.ygrid.grid_line_color = None
+# Define ticker names mapping
+ticker_names = {
+    '^NYA': "NYSE",
+    '^IXIC': "NASDAQ",
+    '^DJI': "Dow Jones",
+    '^GSPC': "S&P 500"
+}
+df['Ticker_Name'] = df['Ticker'].map(ticker_names)
 
-    colors = Category10[10]
-    ticker_names = {
-        '^NYA': "NYSE",
-        '^IXIC': "NASDAQ",
-        '^DJI': "Dow Jones",
-        '^GSPC': "S&P 500"
-    }
+# Create an interactive slider for the date range
+min_date, max_date = df['Date'].min(), df['Date'].max()
+slider = alt.binding_range(min=min_date, max=max_date, step=86400000)  # 86400000ms is one day
+date_selector = alt.selection_single(name="Select", fields=['date'],
+                                     bind=slider, init={'date': min_date})
 
-    for i, (ticker, group) in enumerate(df.groupby('Ticker')):
-        ticker_name = ticker_names.get(ticker, ticker)  # Use mapping, default to ticker if not found
-        source = ColumnDataSource(data={
-            'date': group['Date'],
-            'close': group['Adj Close']
-        })
-        color = colors[i % len(colors)]
-        p.line(x='date', y='close', source=source, legend_label=ticker_name, color=color, line_width=2.5)
-        select.line(x='date', y='close', source=source, color=color, line_width=2.5)
+# Create the Altair chart
+chart = alt.Chart(df).mark_line().encode(
+    x='Date:T',
+    y='Adj Close:Q',
+    color='Ticker_Name:N',
+    tooltip=['Ticker_Name:N', 'Date:T', 'Adj Close:Q']
+).add_selection(
+    date_selector
+).transform_filter(
+    date_selector
+).properties(
+    width=800,
+    height=400
+)
 
-    p.legend.title = "Ticker"
-    p.legend.location = 'top_left'
-
-    # Combining the plots into one layout
-    layout = column(p, select)
-    return layout
-
-# Use Streamlit to display the plot
-df = pd.read_csv("./MarketData.csv")
-df['Date'] = pd.to_datetime(df['Date'])
-bokeh_plot = create_interactive_plot(df)
-st.bokeh_chart(bokeh_plot, use_container_width=True)
+# Display the chart in Streamlit
+st.altair_chart(chart, use_container_width=True)
