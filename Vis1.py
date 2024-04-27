@@ -57,6 +57,8 @@ def load_data():
 
 df = load_data()
 
+st.subheader("A Decade and a Half of Market Volatility and Resilience")
+
 # Selection for year for the first Matplotlib plot
 year_for_losses_and_profits = st.selectbox('Select Year for Losses and Profits:', options=df['Year'].unique(), key='year1')
 
@@ -79,8 +81,6 @@ def update_plot(year):
     ax.set_xticklabels(tickers)
     ax.legend()
     st.pyplot(fig)
-
-st.subheader("A Decade and a Half of Market Volatility and Resilience")
 
 update_plot(year_for_losses_and_profits)
 
