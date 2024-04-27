@@ -95,6 +95,7 @@ chart = alt.Chart(filtered_altair_df).mark_bar().encode(
     x=alt.X("Month_Name:O", title="Month", sort=months_order, axis=alt.Axis(labelAngle=-45)),
     y=alt.Y("sum(Volume):Q", title="Total Volume"),
     color=alt.Color("Ticker_Name:N", title="Ticker"),
+    column='Ticker_Name:N',
     tooltip=[alt.Tooltip('sum(Volume):Q', title="Volume Sum", format=',.0f')]
 ).properties(
     title="Monthly Volume Sum for Each Ticker in Selected Year"
