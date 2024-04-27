@@ -119,6 +119,12 @@ plot_price_change(year_for_price_change)
 
 st.markdown("""
     
+Continuing from the dramatic shifts observed over the past fifteen years, the percentage changes in the prices of the major indices offer a more granular view of the stock market's growth and its broader economic implications. For instance, the strong rebounds seen in NASDAQ, predominantly fueled by the tech sector's exponential growth,
+highlight the increasing importance of technology in the global economy. Similarly, the steady gains in the S&P 500 reflect the diversified nature of this index and underscore the gradual expansion of the U.S. economy across a broader range of industries. However, these percentage increases are not just numbers on a chart; they represent 
+the confidence of investors in the market's stability and future growth potential.
+
+Significant dips, often triggered by international crises or domestic policy shifts, momentarily shake this confidence, yet the historical resilience of these indices suggests a robust economic foundation capable of withstanding such shocks. This elasticity not only reassures investors about short-term recoveries but also paints a broader 
+picture of long-term economic fortitude. As we dissect these percentage changes, we glean insights into the cyclical nature of markets and the pivotal role of investor sentiment in driving economic cycles. Understanding these dynamics is essential for anyone looking to navigate the complexities of investing and economic forecasting.
 """)
 
 st.markdown("""
