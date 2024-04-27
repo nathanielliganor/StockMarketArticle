@@ -131,6 +131,7 @@ ticker_names = {
 df['Ticker_Name'] = df['Ticker'].map(ticker_names)
 
 # Create an interactive slider for the date range
+min_date, max_date = df['Date'].min(), df['Date'].max()
 min_date_ms = int(min_date.timestamp() * 1000)  # convert to milliseconds
 max_date_ms = int(max_date.timestamp() * 1000)
 slider = alt.binding_range(min=min_date_ms, max=max_date_ms, step=86400000)  # step is one day in milliseconds
