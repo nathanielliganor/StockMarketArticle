@@ -195,7 +195,11 @@ a snapshot of investor sentiment at that moment—whether driven by fear, optimi
 
 screenshot_path = "./Screenshot 2024-04-27 at 4.19.38 AM.png"
 
+st.subheader("The Dynamics of Market Indices")
 st.image(screenshot_path, caption='Your Screenshot', use_column_width=True)
+st.caption("""
+Disclaimer: Streamlit does not support Bokeh v3.x, unable to host interactive visualization
+""")
 
 st.markdown("""
 Analyzing the performance of major market indices against each other from 2008 to 2023 unveils a rich tapestry of interwoven trends and divergences. While each index—S&P 500, Dow Jones, NASDAQ, and NYSE—tends to track the overall market sentiment, nuanced differences emerge, reflecting sectoral strengths, economic policies, and global shifts. 
