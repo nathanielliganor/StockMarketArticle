@@ -80,10 +80,10 @@ def update_plot(year):
     ax.legend()
     st.pyplot(fig)
 
+st.subheader("A Decade and a Half of Market Volatility and Resilience")
 
 update_plot(year_for_losses_and_profits)
 
-st.subheader("A Decade and a Half of Market Volatility and Resilience")
 st.markdown("""
 Over the span of 15 tumultuous years from 2008 to 2023, the major U.S. stock indices—the S&P 500, Dow Jones Industrial Average, NASDAQ, 
 and New York Stock Exchange—have ridden waves of significant economic upheaval, reflective of investor sentiment and global events. Starting
