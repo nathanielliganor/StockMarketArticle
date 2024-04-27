@@ -108,6 +108,28 @@ during a specific period by measuring the difference between its closing and ope
 moving averages further enhances our understanding of market trends. By smoothing out short-term fluctuations, moving averages reveal the underlying trend in asset prices over defined periods. In essence, this data manipulation process refines raw market data into actionable intelligence, forming the bedrock of informed investment decisions and empowering investors to navigate the complexities of finance with confidence.
 """)
 
+import streamlit as st
+import pandas as pd
+import altair as alt
+import calendar
+
+# Enable data transformer for Altair
+alt.data_transformers.enable("default")
+
+df = pd.read_csv("./MarketData.csv")
+
+# Data preprocessing
+df['Date'] = pd.to_datetime(df['Date'])
+df['Price_Change'] = df['Adj Close'] - df['Open']
+df['Price_Change_Direction'] = df['Price_Change'].apply(lambda x: 1 if x > 0 else 0)
+df['Price_Percentage_Change'] = ((df['Close'] - df['Open']) / df['Open']) * 100
+df['Price_Percentage_Change_Direction'] = df['Price_Percentage_Change'].apply(lambda x: 1 if x > 0 else 0)
+window_size = 5
+df['Moving_Average'] = df['Adj Close'].rolling(window=window_size).mean()
+df['Year'] = df['Date'].dt.year
+df['Month'] = df['Date'].dt.month
+df['Month_Name'] = df['Month'].apply(lambda x: calendar.month_name[x])
+
 ticker_name_mapping = {
     '^NYA': 'New York Stock Exchange',
     '^IXIC': 'NASDAQ',
