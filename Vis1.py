@@ -198,8 +198,10 @@ html_file_path = "./stock_graph.html"
 
 st.subheader("The Dynamics of Market Indices")
 st.image(screenshot_path, caption='Your Screenshot', use_column_width=True)
-st.caption(f'<a href="file://{html_file_path}" target="_blank">Link to HTML file</a>', unsafe_allow_html=True)
-
+st.caption("""
+Disclaimer: Streamlit does not support Bokeh v3.x, unable to host interactive visualization. 
+[See link for visualization](https://huggingface.co/spaces/nathanielliganor/NarrativeVisualization/blob/main/IndexPerformace.ipynb)
+""")
 
 st.markdown("""
 Analyzing the performance of major market indices against each other from 2008 to 2023 unveils a rich tapestry of interwoven trends and divergences. While each index—S&P 500, Dow Jones, NASDAQ, and NYSE—tends to track the overall market sentiment, nuanced differences emerge, reflecting sectoral strengths, economic policies, and global shifts. 
