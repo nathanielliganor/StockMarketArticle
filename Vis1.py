@@ -192,3 +192,8 @@ correlating directly with key economic indicators and major global events. For i
 Further, geopolitical tensions such as the U.S.-China trade wars or Brexit negotiations often led to increased market volatility, reflected in higher trading volumes as investors reacted to potential economic impacts. Conversely, periods of market stability and investor confidence typically saw more moderate trading volumes. Each spike or dip provides
 a snapshot of investor sentiment at that moment—whether driven by fear, optimism, or strategic recalibration. Analyzing these trends helps investors understand not just the "what" and "when" of trading, but also the "why," offering invaluable insights into the mechanics of market dynamics and economic resilience.
 """)
+
+screenshot_path = "./Screenshot 2024-04-27 at 4.19.38 AM.png"
+
+st.image(screenshot_path, caption='Your Screenshot', use_column_width=True)
+
