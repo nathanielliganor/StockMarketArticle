@@ -131,21 +131,22 @@ ticker_names = {
 df['Ticker_Name'] = df['Ticker'].map(ticker_names)
 
 # Create an interactive slider for the date range
-min_date, max_date = df['Date'].min(), df['Date'].max()
-slider = alt.binding_range(min=min_date, max=max_date, step=86400000)  # 86400000ms is one day
-date_selector = alt.selection_single(name="Select", fields=['date'],
-                                     bind=slider, init={'date': min_date})
+min_date_ms = int(min_date.timestamp() * 1000)  # convert to milliseconds
+max_date_ms = int(max_date.timestamp() * 1000)
+slider = alt.binding_range(min=min_date_ms, max=max_date_ms, step=86400000)  # step is one day in milliseconds
+date_selector = alt.selection_single(name="Select", fields=['date'], bind=slider, init={'date': min_date_ms})
+
 
 # Create the Altair chart
 chart = alt.Chart(df).mark_line().encode(
-    x='Date:T',
-    y='Adj Close:Q',
+    x=alt.X('Date:T', title="Date"),
+    y=alt.Y('Adj Close:Q', title="Adjusted Close"),
     color='Ticker_Name:N',
     tooltip=['Ticker_Name:N', 'Date:T', 'Adj Close:Q']
 ).add_selection(
     date_selector
 ).transform_filter(
-    date_selector
+    (datum.date >= date_selector.date) & (datum.date < date_selector.date + 86400000)  # Filter for the selected day
 ).properties(
     width=800,
     height=400
