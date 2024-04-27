@@ -198,7 +198,8 @@ screenshot_path = "./Screenshot 2024-04-27 at 4.19.38 AM.png"
 st.subheader("The Dynamics of Market Indices")
 st.image(screenshot_path, caption='Your Screenshot', use_column_width=True)
 st.caption("""
-Disclaimer: Streamlit does not support Bokeh v3.x, unable to host interactive visualization
+Disclaimer: Streamlit does not support Bokeh v3.x, unable to host interactive visualization. 
+[See link for visualization](file:///private/var/folders/_b/1njn3wxs55b41_7pgjh8_g700000gn/T/tmp6m87iy5y.html)
 """)
 
 st.markdown("""
