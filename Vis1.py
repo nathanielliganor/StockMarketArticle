@@ -107,3 +107,37 @@ chart = alt.Chart(filtered_altair_df).mark_bar().encode(
 )
 
 st.altair_chart(chart, use_container_width=True)
+
+def create_data():
+    np.random.seed(10)
+    dates = pd.date_range('2023-01-01', periods=100)
+    data = np.random.randn(100).cumsum()
+    df = pd.DataFrame(data, columns=['value'], index=dates)
+    return df
+
+df = create_data()
+
+# Function to create a basic Bokeh plot
+def create_simple_bokeh_plot(df):
+    # Prepare data for Bokeh
+    source = ColumnDataSource(data={
+        'date': df.index,
+        'value': df['value']
+    })
+
+    # Create a figure
+    p = figure(title="Simple Bokeh Line Plot", x_axis_type='datetime',
+               plot_height=350, plot_width=800)
+    p.line('date', 'value', source=source, line_width=2)
+
+    return p
+
+# Streamlit application layout
+st.title("Basic Bokeh Plot in Streamlit")
+st.write("This is a simple example of integrating a Bokeh plot within Streamlit.")
+
+# Generate the plot
+plot = create_simple_bokeh_plot(df)
+
+# Display the plot in Streamlit
+st.bokeh_chart(plot, use_container_width=True)
