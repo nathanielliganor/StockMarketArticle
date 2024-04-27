@@ -73,3 +73,12 @@ def update_plot(year):
     st.pyplot(fig)
 
 update_plot(year)
+
+st.markdown("""
+### Data Manipulation
+Market data, often stored in files like "MarketData.csv," undergoes a series of essential transformations to unlock its insights for investors. Think of it as refining raw material to extract its purest form. Initially, the data's time references are standardized using a process known as datetime conversion (pd.to_datetime()).
+This ensures that all dates are in a consistent format, making comparisons across different time periods accurate and meaningful. Next, unnecessary clutter is removed from the dataset. This involves eliminating extraneous columns that don't contribute to the analysis or understanding of market trends (drop(columns=['Unnamed: 0'])). 
+These could be placeholder columns or data labels that serve no analytical purpose. The manipulation of market data involves calculating key metrics such as Price Change and Percentage Change, which offer crucial insights into how asset prices fluctuate over time. Price Change indicates whether an asset's price increased or decreased 
+during a specific period by measuring the difference between its closing and opening prices. Percentage Change, on the other hand, expresses the relative change in an asset's price as a percentage of the opening price, providing valuable context regarding the magnitude of price movements. Additionally, employing advanced techniques like 
+moving averages further enhances our understanding of market trends. By smoothing out short-term fluctuations, moving averages reveal the underlying trend in asset prices over defined periods. In essence, this data manipulation process refines raw market data into actionable intelligence, forming the bedrock of informed investment decisions and empowering investors to navigate the complexities of finance with confidence.
+""")
