@@ -59,8 +59,6 @@ df = load_data()
 
 st.subheader("A Decade and a Half of Market Volatility and Resilience")
 
-# Selection for year for the first Matplotlib plot
-year_for_losses_and_profits = st.selectbox('Select Year for Losses and Profits:', options=df['Year'].unique(), key='year1')
 
 # Function to update plot for losses and profits
 def update_plot(year):
@@ -83,6 +81,8 @@ def update_plot(year):
     st.pyplot(fig)
 
 update_plot(year_for_losses_and_profits)
+# Selection for year for the first Matplotlib plot
+year_for_losses_and_profits = st.selectbox('Select Year for Losses and Profits:', options=df['Year'].unique(), key='year1')
 
 st.markdown("""
 Over the span of 15 tumultuous years from 2008 to 2023, the major U.S. stock indices—the S&P 500, Dow Jones Industrial Average, NASDAQ, 
