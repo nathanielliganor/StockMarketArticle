@@ -75,7 +75,7 @@ def plot_price_change(year):
     # Create the plot
     plt.figure(figsize=(10, 6))
     plt.bar(filtered_data['Date'].dt.strftime('%Y-%m-%d'), filtered_data['Price_Percentage_Change'],
-            width=10, color='blue')  # Adjust width as needed
+            width=0.5, color='blue')  # Adjust width as needed
 
     plt.title(f'Bar Chart of Price Percentage Change for Year: {year}')
     plt.xlabel('Date')
