@@ -3,40 +3,47 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import altair as alt
+import calendar
 
 st.title("Investor's Daily")
-st.markdown("""
-Article By: Ayush Shah and Nathaniel Liganor
-""")
 st.subheader("Investing in Insights: Interactive Tools to Navigate the Stock Market")
 
-st.markdown("""
-Detailed description omitted for brevity.
-""")
+# Enable Altair data transformer
+alt.data_transformers.enable("default")
 
-# Function to load the market data
+# Function to load and preprocess the market data
 @st.cache
 def load_data():
-    market_data = pd.read_csv("./MarketData.csv")
-    market_data['Date'] = pd.to_datetime(market_data['Date'])
-    market_data.drop(columns=['Unnamed: 0'], inplace=True)
-    market_data['Price_Change'] = market_data['Adj Close'] - market_data['Open']
-    market_data['Price_Change_Direction'] = market_data['Price_Change'].apply(lambda x: 1 if x > 0 else 0)
-    market_data['Price_Percentage_Change'] = ((market_data['Close'] - market_data['Open']) / market_data['Open']) * 100
-    market_data['Price_Percentage_Change_Direction'] = market_data['Price_Percentage_Change'].apply(lambda x: 1 if x > 0 else 0)
+    df = pd.read_csv("./MarketData.csv")
+    df['Date'] = pd.to_datetime(df['Date'])
+    df.drop(columns=['Unnamed: 0'], inplace=True)
+    df['Price_Change'] = df['Adj Close'] - df['Open']
+    df['Price_Change_Direction'] = df['Price_Change'].apply(lambda x: 1 if x > 0 else 0)
+    df['Price_Percentage_Change'] = ((df['Close'] - df['Open']) / df['Open']) * 100
+    df['Price_Percentage_Change_Direction'] = df['Price_Percentage_Change'].apply(lambda x: 1 if x > 0 else 0)
     window_size = 5
-    market_data['Moving_Average'] = market_data['Adj Close'].rolling(window=window_size).mean()
-    return market_data
+    df['Moving_Average'] = df['Adj Close'].rolling(window=window_size).mean()
+    df['Year'] = df['Date'].dt.year
+    df['Month'] = df['Date'].dt.month
+    df['Month_Name'] = df['Month'].apply(lambda x: calendar.month_name[x])
+    ticker_name_mapping = {
+        '^NYA': 'New York Stock Exchange',
+        '^IXIC': 'NASDAQ',
+        '^DJI': 'Dow Jones',
+        '^GSPC': 'S&P 500'
+    }
+    df['Ticker_Name'] = df['Ticker'].map(ticker_name_mapping)
+    return df
 
-market_data = load_data()
-unique_years = sorted(market_data['Date'].dt.year.unique())
+df = load_data()
 
-# Streamlit selection for year for the first visualization
-year_for_losses_and_profits = st.selectbox('Select Year for Losses and Profits:', unique_years, key='year1')
+# Selection for year for the first Matplotlib plot
+year_for_losses_and_profits = st.selectbox('Select Year for Losses and Profits:', options=df['Year'].unique(), key='year1')
 
 # Function to update plot for losses and profits
 def update_plot(year):
-    filtered_data = market_data[market_data['Date'].dt.year == year]
+    filtered_data = df[df['Year'] == year]
     grouped_data = filtered_data.groupby('Ticker')['Price_Change_Direction'].value_counts().unstack().fillna(0)
     tickers = grouped_data.index
     zeros = grouped_data[0].values
@@ -56,12 +63,12 @@ def update_plot(year):
 
 update_plot(year_for_losses_and_profits)
 
-# Streamlit selection for year for the second visualization
-year_for_price_change = st.selectbox('Select Year for Price Percentage Change:', unique_years, key='year2')
+# Selection for year for the second Matplotlib plot
+year_for_price_change = st.selectbox('Select Year for Price Percentage Change:', options=df['Year'].unique(), key='year2')
 
 # Function to plot price percentage change
 def plot_price_change(year):
-    filtered_data = market_data[market_data['Date'].dt.year == year]
+    filtered_data = df[df['Year'] == year]
     plt.figure(figsize=(10, 6))
     plt.bar(filtered_data['Date'].dt.strftime('%Y-%m-%d'), filtered_data['Price_Percentage_Change'],
             width=0.5, color='blue')
@@ -75,3 +82,22 @@ def plot_price_change(year):
     st.pyplot(plt)
 
 plot_price_change(year_for_price_change)
+
+# Selection for year for the Altair chart
+year_for_altair = st.selectbox('Select Year for Altair Chart:', options=df['Year'].unique(), key='year3')
+
+# Filtering data for the Altair chart based on selected year
+filtered_altair_df = df[df['Year'] == year_for_altair]
+
+# Create the Altair chart
+months_order = [calendar.month_name[i] for i in range(1, 13)]
+chart = alt.Chart(filtered_altair_df).mark_bar().encode(
+    x=alt.X("Month_Name:O", title="Month", sort=months_order, axis=alt.Axis(labelAngle=-45)),
+    y=alt.Y("sum(Volume):Q", title="Total Volume"),
+    color=alt.Color("Ticker_Name:N", title="Ticker"),
+    tooltip=[alt.Tooltip('sum(Volume):Q', title="Volume Sum", format=',.0f')]
+).properties(
+    title="Monthly Volume Sum for Each Ticker in Selected Year"
+)
+
+st.altair_chart(chart, use_container_width=True)
