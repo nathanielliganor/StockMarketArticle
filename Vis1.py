@@ -4,10 +4,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 st.title("Investor's Daily")
-st.subheader("Investing in Insights: Interactive Tools to Navigate the Stock Market")
 st.markdown("""
-### Article By: Ayush Shah and Nathaniel Liganor
+Article By: Ayush Shah and Nathaniel Liganor
 """)
+st.subheader("Investing in Insights: Interactive Tools to Navigate the Stock Market")
 
 st.markdown("""
 In today’s rapidly evolving financial landscape, understanding the stock market’s complex dynamics is crucial for both season investors and newcomers alike. This article aims to demystify the intricacies of stock markets through a series of interactive visualizations that bring clarity to the historical performance and current state of major stock market indices, sectoral impacts, and real-time market fluctuations. From exploring long-term trends and volatility in iconic indices such as the S&P 500, Dow Jones, and NASDAQ, to dissecting the performance across diverse sectors like technology, healthcare, and finance, and finally to providing up-to-the-minute updates via a real-time ticker and news feed, these visualizations offer a comprehensive look into the forces shaping our financial world. Each component is designed to not only inform but also engage users, facilitating a deeper understanding of how historical trends and current events converge to influence market behavior.
