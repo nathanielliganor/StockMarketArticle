@@ -114,7 +114,7 @@ st.altair_chart(chart, use_container_width=True)
 # Load and preprocess the data
 @st.cache
 def load_data():
-    df = pd.read_csv("~/Documents/MarketData/MarketData.csv")
+    df = pd.read_csv("./MarketData.csv")
     df['Date'] = pd.to_datetime(df['Date'])
     df['Year'] = df['Date'].dt.year
     return df
