@@ -80,9 +80,9 @@ def update_plot(year):
     ax.legend()
     st.pyplot(fig)
 
+year_for_losses_and_profits = st.selectbox('Select Year for Losses and Profits:', options=df['Year'].unique(), key='year1')
 update_plot(year_for_losses_and_profits)
 # Selection for year for the first Matplotlib plot
-year_for_losses_and_profits = st.selectbox('Select Year for Losses and Profits:', options=df['Year'].unique(), key='year1')
 
 st.markdown("""
 Over the span of 15 tumultuous years from 2008 to 2023, the major U.S. stock indices—the S&P 500, Dow Jones Industrial Average, NASDAQ, 
