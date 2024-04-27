@@ -37,31 +37,32 @@ def load_data():
     df = pd.read_csv("./MarketData.csv")
     df['Date'] = pd.to_datetime(df['Date'])
     df.drop(columns=['Unnamed: 0'], inplace=True)
-
     df['Price_Change'] = df['Adj Close'] - df['Open']
     df['Price_Change_Direction'] = df['Price_Change'].apply(lambda x: 1 if x > 0 else 0)
     df['Price_Percentage_Change'] = ((df['Close'] - df['Open']) / df['Open']) * 100
     df['Price_Percentage_Change_Direction'] = df['Price_Percentage_Change'].apply(lambda x: 1 if x > 0 else 0)
     window_size = 5
     df['Moving_Average'] = df['Adj Close'].rolling(window=window_size).mean()
+    df['Year'] = df['Date'].dt.year
+    df['Month'] = df['Date'].dt.month
+    df['Month_Name'] = df['Month'].apply(lambda x: calendar.month_name[x])
+    ticker_name_mapping = {
+        '^NYA': 'New York Stock Exchange',
+        '^IXIC': 'NASDAQ',
+        '^DJI': 'Dow Jones',
+        '^GSPC': 'S&P 500'
+    }
+    df['Ticker_Name'] = df['Ticker'].map(ticker_name_mapping)
     return df
 
 df = load_data()
-unique_years = sorted(df['Date'].dt.year.unique())
 
-# Streamlit selection for year
-year = st.selectbox('Select Year:', unique_years)
+# Selection for year for the first Matplotlib plot
+year_for_losses_and_profits = st.selectbox('Select Year for Losses and Profits:', options=df['Year'].unique(), key='year1')
 
-# Define the ticker names mapping
-ticker_names = {
-    '^NYA': "NYSE",
-    '^IXIC': "NASDAQ",
-    '^DJI': "Dow Jones",
-    '^GSPC': "S&P 500"
-}
-
+# Function to update plot for losses and profits
 def update_plot(year):
-    filtered_data = df[df['Date'].dt.year == year]
+    filtered_data = df[df['Year'] == year]
     grouped_data = filtered_data.groupby('Ticker')['Price_Change_Direction'].value_counts().unstack().fillna(0)
     tickers = grouped_data.index
     zeros = grouped_data[0].values
@@ -71,20 +72,15 @@ def update_plot(year):
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.bar(x - width/2, zeros, width, label='Losses per day')
     ax.bar(x + width/2, ones, width, label='Profits per day')
-
     ax.set_xlabel('Ticker')
     ax.set_ylabel('Count')
-    ax.set_title(f'Counts of losses and profits occurred per day by Ticker ({year})')
-
-    # Replace ticker symbols with names in the plot
-    ticker_labels = [ticker_names.get(ticker, ticker) for ticker in tickers]
+    ax.set_title(f'Counts of Losses and Profits Occurred Per Day by Ticker ({year})')
     ax.set_xticks(x)
-    ax.set_xticklabels(ticker_labels)
+    ax.set_xticklabels(tickers)
     ax.legend()
-
     st.pyplot(fig)
 
-update_plot(year)
+update_plot(year_for_losses_and_profits)
 
 # Selection for year for the second Matplotlib plot
 year_for_price_change = st.selectbox('Select Year for Price Percentage Change:', options=df['Year'].unique(), key='year2')
@@ -173,4 +169,3 @@ investors with the knowledge to assess how external factors drive trading behavi
 the ebb and flow of the market's pulse, providing a deeper appreciation of how historical and current events shape financial landscapes 
 and influence investment strategies.
 """)
-
