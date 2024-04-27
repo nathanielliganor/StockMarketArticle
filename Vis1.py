@@ -82,7 +82,6 @@ def plot_price_change(year):
 
 # Call the functions to update the plots
 update_plot(year)
-plot_price_change(year)
 
 st.markdown("""
 ### Data Manipulation
@@ -93,3 +92,4 @@ during a specific period by measuring the difference between its closing and ope
 moving averages further enhances our understanding of market trends. By smoothing out short-term fluctuations, moving averages reveal the underlying trend in asset prices over defined periods. In essence, this data manipulation process refines raw market data into actionable intelligence, forming the bedrock of informed investment decisions and empowering investors to navigate the complexities of finance with confidence.
 """)
 
+plot_price_change(year)
