@@ -1,15 +1,14 @@
 import streamlit as st
 import pandas as pd
-from bokeh.plotting import figure, show
+from bokeh.plotting import figure
 from bokeh.models import ColumnDataSource, RangeTool
 from bokeh.layouts import column
-from bokeh.palettes import Category10
-from bokeh.io import output_notebook
+from bokeh.palettes import Category20  # Using a larger palette
 
 # Load the market data
 @st.cache
 def load_data():
-    df = pd.read_csv("./MarketData.csv")
+    df = pd.read_csv("~/Documents/MarketData/MarketData.csv")  # Adjust the path as needed
     df['Date'] = pd.to_datetime(df['Date'])
     return df
 
@@ -29,7 +28,7 @@ range_tool.overlay.fill_alpha = 0.2
 select.add_tools(range_tool)
 select.ygrid.grid_line_color = None
 
-colors = Category10[10]
+colors = Category20[20]  # Using a larger palette for more tickers
 
 ticker_names = {
     '^NYA': "NYSE",
@@ -51,5 +50,5 @@ for i, (ticker, group) in enumerate(df.groupby('Ticker')):
 p.legend.title = "Ticker"
 p.legend.location = 'top_left'
 
-# Display the Bokeh plot in the Streamlit app
 st.bokeh_chart(column(p, select), use_container_width=True)
+
