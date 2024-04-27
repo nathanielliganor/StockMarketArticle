@@ -19,13 +19,12 @@ Diving deeper, our sector-specific analyses offer a nuanced perspective, dissect
 Moreover, our real-time data integration ensures that readers remain at the forefront of market developments. The live ticker and news feed provide instantaneous updates, capturing the pulse of the financial world as it unfolds. Whether tracking sudden market fluctuations, monitoring breaking news, or staying abreast of emerging trends, these features empower users to make informed decisions and stay ahead of the curve..
 """)
 
-# Load the market data
+# Function to load the market data
 @st.cache
 def load_data():
     market_data = pd.read_csv("./MarketData.csv")
     market_data['Date'] = pd.to_datetime(market_data['Date'])
     market_data.drop(columns=['Unnamed: 0'], inplace=True)
-
     market_data['Price_Change'] = market_data['Adj Close'] - market_data['Open']
     market_data['Price_Change_Direction'] = market_data['Price_Change'].apply(lambda x: 1 if x > 0 else 0)
     market_data['Price_Percentage_Change'] = ((market_data['Close'] - market_data['Open']) / market_data['Open']) * 100
@@ -48,6 +47,7 @@ ticker_names = {
     '^GSPC': "S&P 500"
 }
 
+# Function to update plot for losses and profits
 def update_plot(year):
     filtered_data = market_data[market_data['Date'].dt.year == year]
     grouped_data = filtered_data.groupby('Ticker')['Price_Change_Direction'].value_counts().unstack().fillna(0)
@@ -59,20 +59,30 @@ def update_plot(year):
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.bar(x - width/2, zeros, width, label='Losses per day')
     ax.bar(x + width/2, ones, width, label='Profits per day')
-
     ax.set_xlabel('Ticker')
     ax.set_ylabel('Count')
     ax.set_title(f'Counts of Losses and Profits Occurred Per Day by Ticker ({year})')
-
-    # Replace ticker symbols with names in the plot
-    ticker_labels = [ticker_names.get(ticker, ticker) for ticker in tickers]
     ax.set_xticks(x)
-    ax.set_xticklabels(ticker_labels)
+    ax.set_xticklabels(tickers)
     ax.legend()
-
     st.pyplot(fig)
 
+# Function to plot price percentage change
+def plot_price_change(year):
+    filtered_data = market_data[market_data['Date'].dt.year == year]
+    plt.figure(figsize=(10, 6))
+    plt.bar(filtered_data['Date'].dt.strftime('%Y-%m-%d'), filtered_data['Price_Percentage_Change'],
+            width=0.5, color='blue')
+    plt.title(f'Bar Chart of Price Percentage Change for Year: {year}')
+    plt.xlabel('Date')
+    plt.ylabel('Percentage Change (%)')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    st.pyplot(plt)
+
+# Call the functions to update the plots
 update_plot(year)
+plot_price_change(year)
 
 st.markdown("""
 ### Data Manipulation
@@ -83,39 +93,3 @@ during a specific period by measuring the difference between its closing and ope
 moving averages further enhances our understanding of market trends. By smoothing out short-term fluctuations, moving averages reveal the underlying trend in asset prices over defined periods. In essence, this data manipulation process refines raw market data into actionable intelligence, forming the bedrock of informed investment decisions and empowering investors to navigate the complexities of finance with confidence.
 """)
 
-import streamlit as st
-import pandas as pd
-import matplotlib.pyplot as plt
-
-# Load the market data
-@st.cache
-def load_data():
-    df = pd.read_csv("./MarketData.csv")
-    df['Date'] = pd.to_datetime(df['Date'])
-    df.drop(columns=['Unnamed: 0'], inplace=True)
-    return df
-
-market_data = load_data()
-unique_years = sorted(market_data['Date'].dt.year.unique())
-
-# Streamlit widget for selecting the year
-year = st.selectbox('Select Year:', unique_years)
-
-def update_plot(year):
-    # Filter market data by the selected year
-    filtered_data = market_data[market_data['Date'].dt.year == year]
-
-    # Create the plot
-    plt.figure(figsize=(10, 6))
-    plt.bar(filtered_data['Date'].dt.strftime('%Y-%m-%d'), filtered_data['Price_Percentage_Change'],
-            width=0.5, color='blue')
-    plt.title('Bar Chart of Price Percentage Change for Year: ' + str(year))
-    plt.xlabel('Date')
-    plt.ylabel('Percentage Change (%)')
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-
-    # Display the plot in Streamlit
-    st.pyplot(plt)
-
-update_plot(year)
