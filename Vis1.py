@@ -137,6 +137,7 @@ ticker_name_mapping = {
     '^GSPC': 'S&P 500'
 }
 
+df['Date_Ticker'] = df.apply(lambda x: f"{x['Date'].strftime('%Y-%m-%d')} {x['Ticker_Name']}", axis=1)
 df['Ticker_Name'] = df['Ticker'].map(ticker_name_mapping)
 months_order = [calendar.month_name[i] for i in range(1, 13)]
 
@@ -148,10 +149,9 @@ filtered_df = df[df['Year'] == year]
 
 # Create the chart
 chart = alt.Chart(filtered_df).mark_bar().encode(
-    x=alt.X("Month_Name:O", title="Month", sort=months_order, axis=alt.Axis(labelAngle=-45)),
+    x=alt.X("Date_Ticker:N", title="Month", sort=months_order, axis=alt.Axis(labelAngle=-45)),
     y=alt.Y("sum(Volume):Q", title="Total Volume"),
     color=alt.Color("Ticker_Name:N", title="Ticker"),
-    xOffset=alt.XOffset("Ticker:N", title="Ticker"),
     tooltip=[alt.Tooltip('sum(Volume):Q', title="Volume Sum", format=',.0f')]
 ).properties(
     title="Monthly Volume Sum for Each Ticker in Selected Year"
