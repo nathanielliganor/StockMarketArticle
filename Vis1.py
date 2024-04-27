@@ -135,7 +135,8 @@ Market data, often stored in files like "MarketData.csv," undergoes a series of 
 This ensures that all dates are in a consistent format, making comparisons across different time periods accurate and meaningful. Next, unnecessary clutter is removed from the dataset. This involves eliminating extraneous columns that don't contribute to the analysis or understanding of market trends (drop(columns=['Unnamed: 0'])). 
 These could be placeholder columns or data labels that serve no analytical purpose. The manipulation of market data involves calculating key metrics such as Price Change and Percentage Change, which offer crucial insights into how asset prices fluctuate over time. Price Change indicates whether an asset's price increased or decreased 
 during a specific period by measuring the difference between its closing and opening prices. Percentage Change, on the other hand, expresses the relative change in an asset's price as a percentage of the opening price, providing valuable context regarding the magnitude of price movements. Additionally, employing advanced techniques like 
-moving averages further enhances our understanding of market trends. By smoothing out short-term fluctuations, moving averages reveal the underlying trend in asset prices over defined periods. In essence, this data manipulation process refines raw market data into actionable intelligence, forming the bedrock of informed investment decisions and empowering investors to navigate the complexities of finance with confidence.
+moving averages further enhances our understanding of market trends. By smoothing out short-term fluctuations, moving averages reveal the underlying trend in asset prices over defined periods. In essence, this data manipulation process refines raw market data into actionable intelligence, forming the bedrock of informed investment decisions 
+and empowering investors to navigate the complexities of finance with confidence.
 """)
 
 # Enable data transformer for Altair
@@ -185,13 +186,9 @@ chart = alt.Chart(filtered_df).mark_bar().encode(
 st.altair_chart(chart, use_container_width=True)
 
 st.markdown("""
-Delving into the intricacies of trading volume, our interactive visualization presents a compelling overview of the
-monthly volume sums for each major US stock index from 2008 to 2023. This tool not only highlights the sheer scale of 
-trading activity over time but also enables users to pinpoint specific moments of heightened volatility or unusual market tranquility. 
-By hovering over the data points, users gain insights into the total trading volumes for indices like the S&P 500, Dow Jones, and 
-NASDAQ—allowing them to observe how major events, such as economic recessions, technological breakthroughs, or geopolitical tensions, 
-correlate with spikes or dips in market activity. This visualization is integral to understanding the rhythm of the market and equips 
-investors with the knowledge to assess how external factors drive trading behaviors. Through this dynamic interface, readers can trace 
-the ebb and flow of the market's pulse, providing a deeper appreciation of how historical and current events shape financial landscapes 
-and influence investment strategies.
+The monthly volume sums for each major U.S. stock index reveal a dynamic narrative of trading activity, offering deep insights into the market’s responsiveness to global events and technological advancements. Over the years, trading volumes in indices such as the S&P 500, Dow Jones, NASDAQ, and NYSE have shown significant fluctuations, 
+correlating directly with key economic indicators and major global events. For instance, the financial crisis of 2008 saw trading volumes spike as panic selling ensued, while volumes surged again during the rapid market growth driven by technological innovations in the 2010s, especially within the NASDAQ, which is heavily weighted towards tech companies.
+
+Further, geopolitical tensions such as the U.S.-China trade wars or Brexit negotiations often led to increased market volatility, reflected in higher trading volumes as investors reacted to potential economic impacts. Conversely, periods of market stability and investor confidence typically saw more moderate trading volumes. Each spike or dip provides
+a snapshot of investor sentiment at that moment—whether driven by fear, optimism, or strategic recalibration. Analyzing these trends helps investors understand not just the "what" and "when" of trading, but also the "why," offering invaluable insights into the mechanics of market dynamics and economic resilience.
 """)
