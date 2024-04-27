@@ -10,6 +10,7 @@ from bokeh.models import ColumnDataSource, RangeTool
 from bokeh.layouts import column
 from bokeh.palettes import Category10
 from bokeh.io import output_notebook
+from bokeh.util.serialization import convert_date_to_datetime
 
 
 st.title("Investor's Daily")
@@ -119,13 +120,13 @@ df = create_data()
 
 # Function to create a basic Bokeh plot
 def create_simple_bokeh_plot(df):
-    # Prepare data for Bokeh
+    df['date'] = pd.to_datetime(df.index)  # Ensure datetime format
+    df['date'] = df['date'].apply(convert_date_to_datetime)  # Convert for Bokeh
     source = ColumnDataSource(data={
-        'date': df.index,
+        'date': df['date'],
         'value': df['value']
     })
 
-    # Create a figure
     p = figure(title="Simple Bokeh Line Plot", x_axis_type='datetime',
                plot_height=350, plot_width=800)
     p.line('date', 'value', source=source, line_width=2)
