@@ -37,8 +37,8 @@ def load_data():
 market_data = load_data()
 unique_years = sorted(market_data['Date'].dt.year.unique())
 
-# Streamlit selection for year
-year = st.selectbox('Select Year:', unique_years)
+# Streamlit selection for year for the first visualization
+year_for_losses_and_profits = st.selectbox('Select Year for Losses and Profits:', unique_years, key='year1')
 
 # Define the ticker names mapping
 ticker_names = {
@@ -67,6 +67,10 @@ def update_plot(year):
     ax.set_xticklabels(tickers)
     ax.legend()
     st.pyplot(fig)
+
+
+# Streamlit selection for year for the second visualization
+year_for_price_change = st.selectbox('Select Year for Price Percentage Change:', unique_years, key='year2')
 
 # Function to plot price percentage change
 def plot_price_change(year):
