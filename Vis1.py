@@ -83,9 +83,6 @@ def update_plot(year):
 
 update_plot(year_for_losses_and_profits)
 
-# Selection for year for the second Matplotlib plot
-year_for_price_change = st.selectbox('Select Year for Price Percentage Change:', options=df['Year'].unique(), key='year2')
-
 # Function to plot price percentage change
 def plot_price_change(year):
     filtered_data = df[df['Year'] == year]
@@ -110,6 +107,9 @@ These could be placeholder columns or data labels that serve no analytical purpo
 during a specific period by measuring the difference between its closing and opening prices. Percentage Change, on the other hand, expresses the relative change in an asset's price as a percentage of the opening price, providing valuable context regarding the magnitude of price movements. Additionally, employing advanced techniques like 
 moving averages further enhances our understanding of market trends. By smoothing out short-term fluctuations, moving averages reveal the underlying trend in asset prices over defined periods. In essence, this data manipulation process refines raw market data into actionable intelligence, forming the bedrock of informed investment decisions and empowering investors to navigate the complexities of finance with confidence.
 """)
+
+# Selection for year for the second Matplotlib plot
+year_for_price_change = st.selectbox('Select Year for Price Percentage Change:', options=df['Year'].unique(), key='year2')
 
 plot_price_change(year_for_price_change)
 
