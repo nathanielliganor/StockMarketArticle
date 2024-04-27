@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Load the market data
-@st.cache_data
+@st.cache
 def load_data():
     market_data = pd.read_csv("./MarketData.csv")
     market_data['Date'] = pd.to_datetime(market_data['Date'])
