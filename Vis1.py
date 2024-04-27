@@ -5,12 +5,6 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import altair as alt
 import calendar
-from bokeh.plotting import figure, show
-from bokeh.models import ColumnDataSource, RangeTool
-from bokeh.layouts import column
-from bokeh.palettes import Category10
-from bokeh.io import output_notebook
-from bokeh.util.serialization import convert_date_to_datetime
 from altair import datum
 import calendar
 
