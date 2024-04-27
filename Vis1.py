@@ -84,13 +84,18 @@ def update_plot(year):
 update_plot(year_for_losses_and_profits)
 
 st.markdown("""
-    Our interactive visualization offers a daily breakdown of profits and losses for each major stock index, revealing the pulse of the market
-    with stark clarity. This tool meticulously tracks the fluctuations of the S&P 500, Dow Jones, and NASDAQ, presenting a daily tally of gains 
-    and setbacks. Users can easily discern patterns of resilience and vulnerability, observing how each index responds to economic news, policy 
-    changes, and global events. This visualization not only sheds light on the day-to-day volatility but also paints a broader picture of market 
-    health and investor sentiment over time. By engaging with this dynamic display, users can cultivate a nuanced understanding of market dynamics, 
-    which is crucial for making informed investment decisions. This tool encapsulates the essence of our financial world’s ongoing narrative, capturing 
-    the continuous interplay between triumph and challenge that defines the stock market.
+Over the span of 15 tumultuous years from 2008 to 2023, the major U.S. stock indices—the S&P 500, Dow Jones Industrial Average, NASDAQ, 
+and New York Stock Exchange—have ridden waves of significant economic upheaval, reflective of investor sentiment and global events. Starting
+with the 2008 financial crisis, which sent shockwaves through global markets, these indices experienced precipitous declines, testing the resolve 
+of investors. The subsequent recovery phases were punctuated by key events such as the European debt crisis in 2011, the U.S.-China trade wars starting 
+in 2018, and the unprecedented global impact of the COVID-19 pandemic in 2020. Each event left a distinct mark on the indices, with rapid losses followed 
+by often vigorous recoveries, showcasing the resilience of markets.
+
+During these years, technology booms drove NASDAQ to new heights, while traditional industries bolstered the Dow Jones and NYSE, illustrating a diversification 
+in investor confidence across sectors. The S&P 500, often considered a bellwether for the overall U.S. economy, displayed a steady climb interrupted by brief yet 
+intense periods of volatility, mirroring investor sentiment that fluctuated between optimism and caution. The rise of digital trading platforms and algorithmic 
+trading also transformed market dynamics, leading to faster recoveries and more pronounced swings. As we look towards the future, understanding these patterns of 
+profit and loss becomes crucial for predicting market trends and guiding investor strategies, embodying the ever-evolving spirit of the financial landscape.
 """)
 
 # Selection for year for the second Matplotlib plot
