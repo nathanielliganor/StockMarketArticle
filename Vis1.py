@@ -3,6 +3,13 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+st.title("Market Data Analysis Dashboard")
+
+st.markdown("""
+## Overview
+Welcome to the Market Data Analysis Dashboard. This tool helps visualize and analyze market trends.
+""")
+
 # Load the market data
 @st.cache
 def load_data():
