@@ -108,21 +108,26 @@ during a specific period by measuring the difference between its closing and ope
 moving averages further enhances our understanding of market trends. By smoothing out short-term fluctuations, moving averages reveal the underlying trend in asset prices over defined periods. In essence, this data manipulation process refines raw market data into actionable intelligence, forming the bedrock of informed investment decisions and empowering investors to navigate the complexities of finance with confidence.
 """)
 
-# Selection for year for the second Matplotlib plot
-year_for_price_change = st.selectbox('Select Year for Price Percentage Change:', options=df['Year'].unique(), key='year2')
+ticker_name_mapping = {
+    '^NYA': 'New York Stock Exchange',
+    '^IXIC': 'NASDAQ',
+    '^DJI': 'Dow Jones',
+    '^GSPC': 'S&P 500'
+}
 
-plot_price_change(year_for_price_change)
-
-# Selection for year for the Altair chart
-year_for_altair = st.selectbox('Select Year for Altair Chart:', options=df['Year'].unique(), key='year3')
-
-# Filtering data for the Altair chart based on selected year
-filtered_altair_df = df[df['Year'] == year_for_altair]
-
-# Create the Altair chart
+df['Ticker_Name'] = df['Ticker'].map(ticker_name_mapping)
 months_order = [calendar.month_name[i] for i in range(1, 13)]
-chart = alt.Chart(filtered_altair_df).mark_bar().encode(
+
+# Streamlit UI elements
+year = st.selectbox('Select a Year:', options=df['Year'].unique())
+
+# Filtering data based on selected year
+filtered_df = df[df['Year'] == year]
+
+# Create the chart
+chart = alt.Chart(filtered_df).mark_bar().encode(
     x=alt.X("Month_Name:O", title="Month", sort=months_order, axis=alt.Axis(labelAngle=-45)),
+    xOffset=alt.XOffset("Ticker:N", title="Ticker"),
     y=alt.Y("sum(Volume):Q", title="Total Volume"),
     color=alt.Color("Ticker_Name:N", title="Ticker"),
     tooltip=[alt.Tooltip('sum(Volume):Q', title="Volume Sum", format=',.0f')]
@@ -130,7 +135,7 @@ chart = alt.Chart(filtered_altair_df).mark_bar().encode(
     title="Monthly Volume Sum for Each Ticker in Selected Year"
 )
 
+# Display the chart in Streamlit
 st.altair_chart(chart, use_container_width=True)
-
 ###############################
 
