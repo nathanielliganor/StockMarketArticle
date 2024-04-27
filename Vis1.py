@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Load the market data
-@st.cache
+@st.cache_data
 def load_data():
     market_data = pd.read_csv("./MarketData.csv")
     market_data['Date'] = pd.to_datetime(market_data['Date'])
@@ -31,7 +31,7 @@ def update_plot(year):
     zeros = grouped_data[0].values
     ones = grouped_data[1].values
     x = np.arange(len(tickers))
-    width = 0.35  
+    width = 0.35
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.bar(x - width/2, zeros, width, label='Losses per day')
     ax.bar(x + width/2, ones, width, label='Profits per day')
