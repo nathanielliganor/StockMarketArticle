@@ -7,7 +7,7 @@ from bokeh.palettes import Category10
 from bokeh.io import output_notebook
 
 # Load the market data
-@st.cache_data
+@st.cache
 def load_data():
     df = pd.read_csv("./MarketData.csv")
     df['Date'] = pd.to_datetime(df['Date'])
