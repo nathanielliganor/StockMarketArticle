@@ -11,8 +11,11 @@ import calendar
 def apply_custom_fonts():
     st.markdown("""
         <style>
-        body {
-            font-family: "Times New Roman", Georgia, serif;
+        st.title {
+            font-family: "Times New Roman", Georgia, serif;  /* Customize the font for the title */
+        }
+        st.subheader {
+            font-family: "Georgia", "Times New Roman", serif;  /* Customize the font for the subheader */
         }
         </style>
         """, unsafe_allow_html=True)
