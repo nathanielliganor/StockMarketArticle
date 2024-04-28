@@ -8,6 +8,16 @@ import calendar
 from altair import datum
 import calendar
 
+def apply_custom_fonts():
+    st.markdown("""
+        <style>
+        body {
+            font-family: "Times New Roman", Georgia, serif;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
+apply_custom_fonts()
 
 st.title("Investor's Daily")
 st.subheader("Charting the Course: Navigating the Complexities of the Stock Market Through Data Insights and Investor Sentiment, 2008-2023")
